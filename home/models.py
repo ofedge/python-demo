@@ -27,4 +27,4 @@ class Post(db.Model):
         self.crtTime = crtTime
 
     def __repr__(self):
-        '<Post %r: %r [%r]' % (self.userid, self.content, self.crtTime)
+        return '<Post %r: %r %r>' % (self.userid, self.content, self.crtTime)
