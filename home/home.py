@@ -15,7 +15,7 @@ def index():
     return render_template('index.html', post=post)
 
 
-@app.route('/add', methods=['POST', 'GET'])
+@app.route('/adduser', methods=['POST', 'GET'])
 def add_user():
     user = User(request.args.get('username'), request.args.get('password'))
     db.session.add(user)
@@ -29,9 +29,9 @@ def signin():
         return render_template('signin.html')
     username = request.form['username']
     password = request.form['password']
-    user = User.query.filter(username=username, password=password).first()
+    user = User.query.filter_by(username=username, password=password).first()
     if user:
-        session['loginUser'] = user
+        session['login_user'] = {"userid": user.id, "username": user.username}
         return redirect(url_for('post'))
     flash('Illegal username or password')
     return redirect(url_for('signin'))
@@ -39,18 +39,19 @@ def signin():
 
 @app.route('/post', methods=['GET', 'POST'])
 def post():
+    if not session.get('loginUser'):
+        return redirect(url_for('signin'))
     if request.method == 'GET':
         return render_template('post.html')
-    user = session.get('loginUser')
-    if not user:
-        return redirect(url_for('signin'))
+    login_user = session.get('login_user')
+    print(login_user)
     content = request.form['content']
-    post = Post(user.id, content, datetime.now())
+    post = Post(login_user['userid'], content, datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
     db.session.add(post)
     db.session.commit()
-    flash('post successed')
+    flash('post succeed')
     return redirect(url_for('post'))
 
-    
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)

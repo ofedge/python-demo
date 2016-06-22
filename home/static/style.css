@@ -1,0 +1,17 @@
+html { font-family: 'Consolas', 'Monaco', 'Bitstream Vera Sans Mono', monospace }
+
+.post-container { width: 70%; background-color: #1abc9c; margin: 10% auto; padding: 20px 10px; border-radius: 5px; font-size: 20px }
+.post-container .post { padding: 5px 0; text-indent: 2em }
+.post-container .time { padding: 5px; text-align: right }
+
+.content-form { background-color: #1abc9c; width: 500px; margin: 100px auto; padding: 20px; padding-botton: 5px; border-radius: 5px }
+
+@media (min-width: 1200px){
+
+}
+@media (min-width: 992px){
+
+}
+@media (min-width: 768px){
+
+}
