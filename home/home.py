@@ -32,6 +32,7 @@ def signin():
     user = User.query.filter_by(username=username, password=password).first()
     if user:
         session['login_user'] = {"userid": user.id, "username": user.username}
+        print(user.username, 'sign in')
         return redirect(url_for('post'))
     flash('Illegal username or password')
     return redirect(url_for('signin'))
@@ -39,16 +40,16 @@ def signin():
 
 @app.route('/post', methods=['GET', 'POST'])
 def post():
-    if not session.get('loginUser'):
+    if not session.get('login_user'):
         return redirect(url_for('signin'))
     if request.method == 'GET':
         return render_template('post.html')
     login_user = session.get('login_user')
-    print(login_user)
     content = request.form['content']
     post = Post(login_user['userid'], content, datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
     db.session.add(post)
     db.session.commit()
+    print(login_user['username'], ' post:', content)
     flash('post succeed')
     return redirect(url_for('post'))
 
