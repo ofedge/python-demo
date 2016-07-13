@@ -49,6 +49,7 @@ def write_zip(zip_file, path):
 
 # mail that file to me!
 def send_attach_mail(file):
+    zip_file(ZIP_FILE_NAME, BACKUP_FOLDER)
     msg = MIMEMultipart()
     msg['From'] = MSG_FORM
     msg['To'] = MSG_TO
@@ -64,6 +65,8 @@ def send_attach_mail(file):
     smtp.sendmail(SENDER, RECEIVER, msg.as_string())
     print('send succeed:', datetime.datetime.now())
     smtp.quit()
+    os.remove(ZIP_FILE_NAME)
+    print('file removed')
 
 
 # run the task
@@ -76,5 +79,4 @@ def timer_start(file):
 
 
 if __name__ == '__main__':
-    zip_file(ZIP_FILE_NAME, BACKUP_FOLDER)
     timer_start(ZIP_FILE_NAME)
