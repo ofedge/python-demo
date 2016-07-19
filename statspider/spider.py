@@ -5,6 +5,12 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 BASE_URL = 'http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2014/index.html'
 BASE_ENCODING = 'gb2312'
 
+PROVINCE_SELECTOR = '.provincetr td a'
+CITY_SELECTOR = '.citytr'
+COUNTRY_SELECTOR = '.countytr'
+TOWN_SELECTOR = '.towntr'
+VILLAGE_SELECTOR = '.villagetr'
+
 
 def get_html(url):
     headers = {'user-agent': USER_AGENT}
