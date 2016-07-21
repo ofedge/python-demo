@@ -6,20 +6,20 @@ import time
 import threading
 import smtplib
 import os
-import datetime
+import logging
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.header import Header
 
-ZIP_FILE_NAME = '/root/backup/myhome.zip'
+ZIP_FILE_NAME = '/home/backup/myhomezip'
 BACKUP_FOLDER = '/root/home/'
 
 SENDER = 'sender@163.com'
 RECEIVER = 'receiver@163.com';
-MSG_FORM = 'sender@163.com<vicitf@163.com>';
-MSG_TO = 'receiver@163.com<silcata@163.com>';
-MAIL_SUBJECT = '自动备份';
-MSG_BODY = 'root备份';
+MSG_FORM = 'sender@163.com<sender@163.com>';
+MSG_TO = 'receiver@163.com<receiver@163.com>';
+MAIL_SUBJECT = 'homepage';
+MSG_BODY = 'homepage';
 SMTP_SERVER = 'smtp.163.com';
 SMTP_PORT = 25;
 SMTP_USERNAME = 'sender';
@@ -27,19 +27,24 @@ SMTP_PASSWORD = 'password';
 
 TIME_INTERVAL = 24 * 60 * 60;
 
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(filename)s[line: %(lineno)d] %(levelname)s %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S',
+                    filename='backup.log',
+                    filemode='a')
+
 
 # zip the file in path folder with name filename
 def zip_file(filename, path):
     f = zipfile.ZipFile(filename, 'w')
     write_zip(f, path)
-    print('zip write succed:', datetime.datetime.now())
+    logging.info('zip write succed')
     f.close()
 
 
 # recursion write folder to zip_file
 def write_zip(zip_file, path):
     for file in os.listdir(path):
-        print(file)
         if os.path.isdir(os.path.join(path, file)):
             zip_file.write(os.path.join(path, file))
             write_zip(zip_file, os.path.join(path, file))
@@ -63,16 +68,16 @@ def send_attach_mail(file):
     smtp = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
     smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
     smtp.sendmail(SENDER, RECEIVER, msg.as_string())
-    print('send succeed:', datetime.datetime.now())
+    logging.info('send succeed')
     smtp.quit()
     os.remove(ZIP_FILE_NAME)
-    print('file removed')
+    logging.info('file removed')
 
 
 # run the task
 def timer_start(file):
     while True:
-        print('task started:', datetime.datetime.now())
+        logging.info('task started')
         t = threading.Timer(0, send_attach_mail, (file,))
         t.start()
         time.sleep(TIME_INTERVAL)
