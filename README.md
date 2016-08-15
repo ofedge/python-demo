@@ -7,3 +7,5 @@ home 网站首页
 tools 自动备份发邮件程序
 
 statspider 爬虫
+
+cnki_spider 我用来自动下载知网杂志的
