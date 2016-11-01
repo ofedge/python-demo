@@ -9,3 +9,5 @@ tools 自动备份发邮件程序
 statspider 爬虫
 
 cnki_spider 我用来自动下载知网杂志的
+
+tencent QQ群爬虫, 以及web微信登录,可以接收消息
