@@ -382,30 +382,3 @@ def handle_msg(msg, common_param):
 
 if __name__ == '__main__':
     weixin()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
