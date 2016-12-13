@@ -1,9 +1,10 @@
 $(function(){
+    SignIn.btn();
     $('.item.toc.mainmenu').on('click', function(){
         $('.ui.sidebar.mainmenu').sidebar('show');
     });
-    $('#login').on('click', function(){
-        $('.modal.login').modal('show');
+    $('#signin').on('click', function(){
+        $('.modal.signin').modal('show');
     });
     // click function
     $('a[name=home]').on('click', function(){
@@ -25,6 +26,26 @@ $(function(){
         }
     }
 });
+// sign in
+var SignIn = {
+    btn: function(){
+        $('.modal.signin input[name=username], .modal.signin input[name=password]').on('blur', function(){
+            $(this).val($.trim($(this).val()));
+        });
+        $('.modal.signin div[name=signin]').on('click', function(){
+            var username = $('.modal.signin input[name=username]').val();
+            var password = $('.modal.signin input[name=password]').val();
+            $.ajax({
+                url: '/signin',
+                type: 'post',
+                data: {'username': username, 'password': password},
+                success: function(data){
+                    console.log(data);
+                }
+            });
+        });
+    }
+}
 // page switch function
 var PageSwitch = {
     // all the pages
@@ -47,26 +68,21 @@ var PageSwitch = {
     loadPage: function(pageIndex, url){
         PageSwitch.pageDisappear(
             function(){
-                $.ajax({
-                    url: url,
-                    type: 'get',
-                    dataType: 'html',
-                    success: function(data){
-                        for(var i = 0; i < $(data).length; i++){
-                            if($(data)[i].tagName && $(data)[i].tagName.toLowerCase() == 'title'){
-                                $('title').html($(data).eq(i).html());
-                            }
-                            if($(data).eq(i).find('#wrap_content').length > 0){
-                                var $wrap_content = $(data).eq(i).find('#wrap_content');
-                                $wrap_content.find('#content_body').css('height','0');
-                                $('#wrap_content').html($wrap_content.html());
-                                break;
-                            }
+                $.get(url, function(data){
+                    for(var i = 0; i < $(data).length; i++){
+                        if($(data)[i].tagName && $(data)[i].tagName.toLowerCase() == 'title'){
+                            $('title').html($(data).eq(i).html());
                         }
-                        PageSwitch.pageAppear();
-                        $('.ui.sidebar.mainmenu').sidebar('hide');
+                        if($(data).eq(i).find('#wrap_content').length > 0){
+                            var $wrap_content = $(data).eq(i).find('#wrap_content');
+                            $wrap_content.find('#content_body').css('height','0');
+                            $('#wrap_content').html($wrap_content.html());
+                            break;
+                        }
                     }
-                });
+                    PageSwitch.pageAppear();
+                    $('.ui.sidebar.mainmenu').sidebar('hide');
+                }, 'html');
             }
         );
     },

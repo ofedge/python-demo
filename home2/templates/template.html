@@ -36,15 +36,16 @@
           <a class="item" name="wr">Well Read</a>
           <a class="item" name="ak">Artifact Knowledge</a>
           <div class="right item">
-            <button class="ui inverted button" id="login">Login</button>
+            <button class="ui inverted button" id="signin">Sign in</button>
           </div>
         </div>
       </div>
       <div class="ui container" id="wrap_content">
         
       </div>
+    </div>
   </div>
-  <div class="ui basic modal login">
+  <div class="ui basic modal signin">
     <div class="header">
       Sign in to continue
     </div>
@@ -53,11 +54,11 @@
         <div class="two fields">
           <div class="field">
             <label>First Name</label>
-            <input placeholder="First Name" type="text">
+            <input placeholder="First Name" name="username" type="text">
           </div>
           <div class="field">
             <label>Last Name</label>
-            <input placeholder="Last Name" type="text">
+            <input placeholder="Last Name" name="password" type="password">
           </div>
         </div>
       </div>
@@ -67,12 +68,11 @@
         <div class="ui cancel red basic inverted button">
           <i class="remove icon"></i>Cancel
         </div>
-        <div class="ui green basic inverted button">
+        <div class="ui green basic inverted button" name="signin">
           <i class="checkmark icon"></i>Sign in
         </div>
       </div>
     </div>
   </div>
-</div>
 </body>
 </html>

@@ -36,7 +36,7 @@
           <a class="item" name="wr">Well Read</a>
           <a class="item" name="ak">Artifact Knowledge</a>
           <div class="right item">
-            <button class="ui inverted button" id="login">Login</button>
+            <button class="ui inverted button" id="signin">Sign in</button>
           </div>
         </div>
       </div>
@@ -60,19 +60,23 @@
             <style>
 #resetCanvas{position:absolute;top:320px;left:75px;background-color:transparent;cursor:pointer;border-radius:50px}#myCanvas{background-color:transparent;position:absolute;right:175px;top:170px;transform:rotate(45deg);-ms-transform:rotate(45deg);-webkit-transform:rotate(45deg);-o-transform:rotate(45deg);-moz-transform:rotate(45deg)}.table{width:750px;height:750px;background-color:transparent;position:absolute;right:0}table{border-collapse:collapse;position:absolute;left:125px;top:125px;transform:rotate(45deg);-ms-transform:rotate(45deg);-webkit-transform:rotate(45deg);-o-transform:rotate(45deg);-moz-transform:rotate(45deg)}img{cursor:pointer;transform:rotate(315deg);-ms-transform:rotate(315deg);-webkit-transform:rotate(315deg);-o-transform:rotate(315deg);-moz-transform:rotate(315deg)}.table table tr td{text-align:center;width:100px;height:100px}.footer{position:absolute;bottom:0}
             </style>
-            <script src="static/game.js"></script>
           </div>
         </div>
         <div id="notshowgame">
           <div class="ui text container">
             <h1 class="ui inverted header">Not Supported</h1>
-            <h2>Only when your device width large than 992px.</h2>
+            <h2>Only when your device is wider than 992px.</h2>
           </div>
         </div>
+        <script>
+          var script = document.createElement("script");
+          script.setAttribute("src", "static/game.js");
+          document.getElementById("wrap_content").appendChild(script);
+        </script>
       </div>
     </div>
   </div>
-  <div class="ui basic modal login">
+  <div class="ui basic modal signin">
     <div class="header">
       Sign in to continue
     </div>
@@ -81,11 +85,11 @@
         <div class="two fields">
           <div class="field">
             <label>First Name</label>
-            <input placeholder="First Name" type="text">
+            <input placeholder="First Name" name="username" type="text">
           </div>
           <div class="field">
             <label>Last Name</label>
-            <input placeholder="Last Name" type="text">
+            <input placeholder="Last Name" name="password" type="password">
           </div>
         </div>
       </div>
@@ -95,7 +99,7 @@
         <div class="ui cancel red basic inverted button">
           <i class="remove icon"></i>Cancel
         </div>
-        <div class="ui green basic inverted button">
+        <div class="ui green basic inverted button" name="signin">
           <i class="checkmark icon"></i>Sign in
         </div>
       </div>
