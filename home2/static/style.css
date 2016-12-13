@@ -1,0 +1,40 @@
+.masthead.segment {
+    min-height: 800px;
+}
+.masthead h1.ui.header {
+    margin-top: 3em;
+    font-weight: normal;
+    font-size: 4em;
+}
+.masthead h2 {
+    font-weight: normal;
+}
+.secondary.pointing.menu .toc.item {
+    display: none;
+}
+#showgame {
+    display: none;
+}
+#notshowgame {
+    display: block;
+}
+#content_body{
+    position: relative;
+    overflow: hidden;
+}
+@media only screen and (max-width: 700px){
+    .secondary.pointing.menu .item {
+        display:none;
+    }
+    .secondary.pointing.menu .toc.item {
+        display:block;
+    }
+}
+@media only screen and (min-width: 992px){
+    #showgame {
+        display: block;
+    }
+    #notshowgame {
+        display: none;
+    }
+}
