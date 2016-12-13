@@ -1,11 +1,13 @@
 // startup sequence game script
 var GameSS = {
-    init: function(){
+    _init: function(){
         GameSS.fillHtml();
-        GameSS.drawReset();
         GameSS.drawTable();
+        GameSS.drawReset();
         GameSS.resetSnapshot();
         GameSS.snapshotToHtml();
+    },
+    init: function(){
         $('#resetCanvas').on('click', function(){
             GameSS.drawReset();
             GameSS.resetSnapshot();
@@ -128,17 +130,25 @@ var GameSS = {
         GameSS.snapshotToHtml();
     },
     destroy: function(){
+        $('#resetCanvas').off('click');
+        $('#resetCanvas').off('dblclick');
+        $('img').off('click');
         for (var i = 0; i < 25; i++){
             $('img[data=' + i + ']').css('width', '0px');
         }
         GameSS.drawReset();
     },
     display: function(){
-        GameSS.init();
+        GameSS.destroy();
+        GameSS.drawReset();
+        GameSS.resetSnapshot();
+        GameSS.snapshotToHtml();
         var order = [0, 24, 4, 20, 7, 17, 11, 13, 1, 23, 5, 19, 12];
         for(var i = 0; i < order.length; i++){
             setTimeout('GameSS.click(' + order[i] + ')', (i + 1) * 1000);
         }
+        setTimeout('GameSS.init()', order.length * 1000);
     }
 }
+GameSS._init();
 GameSS.init();
