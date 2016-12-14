@@ -2,7 +2,7 @@
 #-*- coding:utf-8 -*-
 from flask import Flask, render_template, request, session, jsonify
 from flask_pymongo import PyMongo
-import logging, time, hashlib
+import logging, time, hashlib, re
 
 
 MONGO_HOST = 'localhost'
@@ -35,6 +35,10 @@ def md5(s):
     return m.hexdigest()
 
 
+def check_string(val):
+    return re.match('^[0-9a-zA-Z]{4,18}$', val)
+
+
 @app.route('/')
 def index():
     logging.info('--> Visitor Real IP: ' + str(get_ip()))
@@ -55,19 +59,16 @@ def tmp():
 def login():
     username = request.form['username']
     password = request.form['password']
-    print(username, password)
-    if not username or not username.strip():
+    if not username or not check_string(username):
         return jsonify({'rtcode':0, 'msg': 'Invalid username'})
-    elif not password or not password.strip():
+    elif not password or not check_string(password):
         return jsonify({'rtcode':0, 'msg': 'Invalid password'})
     else:
         md5_password = md5(password)
-        print(md5_password)
         user = mongo.db.users.find_one({
             'username': username,
             'password': md5_password
         })
-        print(not user)
         if not user:
             return jsonify({'rtcode':0, 'msg': 'Can not find user'})
         else:

@@ -24,10 +24,13 @@
 }
 @media only screen and (max-width: 700px){
     .secondary.pointing.menu .item {
-        display:none;
+        display: none;
     }
     .secondary.pointing.menu .toc.item {
-        display:block;
+        display: block;
+    }
+    .secondary.pointing.menu .right.menu .item {
+        display: block;
     }
 }
 @media only screen and (min-width: 992px){

@@ -35,8 +35,10 @@
           <a class="item" name="game">Game</a>
           <a class="item" name="wr">Well Read</a>
           <a class="item" name="ak">Artifact Knowledge</a>
-          <div class="right item">
+          <div class="right menu">
             <button class="ui inverted button" id="signin">Sign in</button>
+            <a class="item" name="user">Anna</a>
+            <a class="item" name="signout">Sing out</a>
           </div>
         </div>
       </div>
@@ -51,17 +53,18 @@
     </div>
     <div class="content">
       <div class="ui large inverted form">
-        <div class="two fields">
+        <div class="two fields signin">
           <div class="field">
-            <label>First Name</label>
-            <input placeholder="First Name" name="username" type="text">
+            <label>Username</label>
+            <input placeholder="Username" name="username" type="text">
           </div>
           <div class="field">
-            <label>Last Name</label>
-            <input placeholder="Last Name" name="password" type="password">
+            <label>Password</label>
+            <input placeholder="Password" name="password" type="password">
           </div>
         </div>
       </div>
+      <div class="ui red message hidden">Alphanumeric characters or underscores, minimum is 4 characters</div>
     </div>
     <div class="actions">
       <div class="two fluid ui inverted buttons">
@@ -72,6 +75,15 @@
           <i class="checkmark icon"></i>Sign in
         </div>
       </div>
+    </div>
+  </div>
+  <div class="ui basic small modal signininfo">
+    <div class="header">Info</div>
+    <div class="content">
+      <p></p>
+    </div>
+    <div class="actions">
+      <div class="ui negative button">OK</div>
     </div>
   </div>
 </body>
