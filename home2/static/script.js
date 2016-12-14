@@ -5,10 +5,7 @@ $(function(){
     $('.item.toc.mainmenu').on('click', function(){
         $('.ui.sidebar.mainmenu').sidebar('show');
     });
-    // dropdown
-    $('.dropdown').dropdown({transition: 'drop'});
-
-    // click function
+    // menu item click function
     $('a[name=home]').on('click', function(){
         window.history.pushState(PageSwitch.pages[0], '', '/');
         PageSwitch.home();
@@ -43,22 +40,22 @@ var SignIn = {
         $('.modal.signin .content .red.message').removeClass('visible').addClass('hidden');
     },
     btn: function(){
-        $('#signin').on('click', function(){
-            $('.modal.signin')
-                .modal({
-                    onHidden: function(){
-                        $('.modal.signin input').val('');
-                        SignIn.removeError($('.modal.signin input').parent());
-                    }
-                })
-                .modal('show');
-        });
-        $('.modal.signin input[name=username], .modal.signin input[name=password]').on('blur', function(){
-            var string = $(this).val();
-            if(!SignIn.check(string)){
-                SignIn.addError($(this).parent());
+        // sign in modal
+        $('.modal.signin').modal({
+            onHidden: function(){
+                $('.modal.signin input').val('');
+                SignIn.removeError($('.modal.signin input').parent());
             }
         });
+        $('.modal.basic.signin').on('keydown', function(event){
+            if(event.keyCode == 13){
+                $('.modal.basic.signin div[name=signin]').click();
+            }
+        });
+        $('.secondary.pointing.menu').on('click', '#signin', function(){
+            $('.modal.signin').modal('show');
+        });
+        // sign in
         $('.modal.signin div[name=signin]').on('click', function(){
             var $username = $('.modal.signin input[name=username]');
             var username = $username.val();
@@ -83,11 +80,24 @@ var SignIn = {
                 type: 'post',
                 data: {'username': username, 'password': password},
                 success: function(data){
-                    $('.basic.modal.signininfo .content p').html(data.msg);
-                    $('.basic.modal.signininfo').modal('show');
+                    $('.basic.modal.sysinfo .content').html('<h3>' + data.msg + '</h3>');
+                    $('.basic.modal.sysinfo').modal('show');
                     if(data.rtcode == 1){
-                        
+                        var btnHtml = '<a class="item" name="user">' + data.data.username + '</a><a class="item" name="signout">Sign out</a>';
+                        $('.ui.secondary.pointing.menu .right.menu').html(btnHtml);
                     }
+                }
+            });
+        });
+        $('.secondary.pointing.menu').on('click', 'a[name=signout]', function(){
+            $.ajax({
+                url: '/signout',
+                type: 'get',
+                success: function(data){
+                    $('.basic.modal.sysinfo .content').html('<h3>' + data.msg + '</h3>');
+                    $('.basic.modal.sysinfo').modal('show');
+                    var btnHtml = '<button class="ui inverted button" id="signin">Sign in</button>';
+                    $('.ui.secondary.pointing.menu .right.menu').html(btnHtml);
                 }
             });
         });

@@ -84,7 +84,13 @@ def login():
                 'last_login': get_timestamp(),
                 'login_ip': get_ip()
             }})
-            return jsonify({'rtcode':1, 'msg': 'succeed!', 'data': session.get('user')})
+            return jsonify({'rtcode': 1, 'msg': 'succeed!', 'data': session.get('user')})
+
+
+@app.route('/signout', methods=['GET'])
+def signout():
+    session['user'] = None
+    return jsonify({'rtcode': 1, 'msg': 'succeed!'})
 
 
 if __name__ == '__main__':

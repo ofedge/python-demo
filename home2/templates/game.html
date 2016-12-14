@@ -35,8 +35,13 @@
           <a class="active item" name="game">Game</a>
           <a class="item" name="wr">Well Read</a>
           <a class="item" name="ak">Artifact Knowledge</a>
-          <div class="right item">
+          <div class="right menu">
+            {% if not session.user %}
             <button class="ui inverted button" id="signin">Sign in</button>
+            {% else %}
+            <a class="item" name="user">{{ session.user['username'] }}</a>
+            <a class="item" name="signout">Sign out</a>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -93,6 +98,7 @@
           </div>
         </div>
       </div>
+      <div class="ui red message hidden">Alphanumeric characters or underscores, minimum is 4 characters</div>
     </div>
     <div class="actions">
       <div class="two fluid ui inverted buttons">
@@ -105,10 +111,12 @@
       </div>
     </div>
   </div>
-  <div class="ui basic small modal signininfo">
-    <div class="header">Info</div>
+  <div class="ui basic small modal sysinfo">
+    <div class="header">
+      <i class="warning circle icon"></i>
+      Page Info
+    </div>
     <div class="content">
-      <p></p>
     </div>
     <div class="actions">
       <div class="ui negative button">OK</div>
