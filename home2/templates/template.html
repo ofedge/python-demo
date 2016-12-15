@@ -6,7 +6,7 @@
   <meta name="description" content="Me And Azeroth">
   <meta name="keywords" content="Azeroth,Well Read,Artifact Knowledge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hello Senmantic UI</title>
+  <title>Me And Azeroth</title>
   <meta name="renderer" content="webkit">
   <meta http-equiv="Cache-Control" content="no-siteapp"/>
   <link href="http://cdn.bootcss.com/semantic-ui/2.2.6/semantic.css" rel="stylesheet">
@@ -18,10 +18,26 @@
 <body>
   <!-- left sidebar -->
   <div class="ui vertical inverted sidebar menu left mainmenu">
+    {% if url == '' %}
     <a class="active item" name="home"><i class="home icon"></i>Home</a>
+    {% else %}
+    <a class="item" name="home"><i class="home icon"></i>Home</a>
+    {% endif %}
+    {% if url == 'game' %}
+    <a class="active item" name="game"><i class="game icon"></i>Game</a>
+    {% else %}
     <a class="item" name="game"><i class="game icon"></i>Game</a>
-    <a class="item" name="wr"><i class="book icon"></i>Well Read</a>
-    <a class="item" name="ak"><i class="newspaper icon"></i>Artifact Knowledge</a>
+    {% endif %}
+    {% if url == 'wellread' %}
+    <a class="active item" name="wellread"><i class="book icon"></i>Well Read</a>
+    {% else %}
+    <a class="item" name="wellread"><i class="book icon"></i>Well Read</a>
+    {% endif %}
+    {% if url == 'artifact' %}
+    <a class="active item" name="artifact"><i class="newspaper icon"></i>Artifact Knowledge</a>
+    {% else %}
+    <a class="item" name="artifact"><i class="newspaper icon"></i>Artifact Knowledge</a>
+    {% endif %}
   </div>
   <!-- html content -->
   <div class="pusher">
@@ -31,10 +47,26 @@
           <a class="toc item mainmenu">
             <i class="sidebar icon"></i>
           </a>
+          {% if url == '' %}
           <a class="active item" name="home">Home</a>
+          {% else %}
+          <a class="item" name="home">Home</a>
+          {% endif %}
+          {% if url == 'game' %}
+          <a class="active item" name="game">Game</a>
+          {% else %}
           <a class="item" name="game">Game</a>
-          <a class="item" name="wr">Well Read</a>
-          <a class="item" name="ak">Artifact Knowledge</a>
+          {% endif %}
+          {% if url == 'wellread' %}
+          <a class="active item" name="wellread">Well Read</a>
+          {% else %}
+          <a class="item" name="wellread">Well Read</a>
+          {% endif %}
+          {% if url == 'artifact' %}
+          <a class="active item" name="artifact">Artifact Knowledge</a>
+          {% else %}
+          <a class="item" name="artifact">Artifact Knowledge</a>
+          {% endif %}
           <div class="right menu">
             {% if not session.user %}
             <button class="ui inverted button" id="signin">Sign in</button>
@@ -46,7 +78,7 @@
         </div>
       </div>
       <div class="ui container" id="wrap_content">
-        <h1 style="margin-top: 3em;">Template<h1>
+        {% block body %}{% endblock %}
       </div>
     </div>
   </div>

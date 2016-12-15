@@ -1,5 +1,5 @@
 .masthead.segment {
-    min-height: 800px;
+    min-height: 713px;
 }
 .masthead h1.ui.header {
     margin-top: 3em;
@@ -13,14 +13,45 @@
     display: none;
 }
 #showgame {
+    position:relative;
     display: none;
 }
 #notshowgame {
     display: block;
 }
-#content_body{
-    position: relative;
-    overflow: hidden;
+.ui.dropdown.title {
+    background-color: #1b1c1d !important;
+    color: #fff !important;
+    border-radius: 0.3rem 0.3rem 0 0;
+    border-bottom: 1px solid #fff;
+}
+.ui.dropdown .inversed.menu {
+    border: 0px solid transparent;
+    background: #1B1C1D;
+    box-shadow: none;
+}
+.ui.dropdown .inversed.menu > a:not(.ui){
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+}
+.ui.loading.segment:before{
+    background-color: #262626;
+}
+.article {
+    text-align: left;
+}
+.article p {
+    text-indent: 2em;
+}
+.article p b {
+    display: block;
+    text-align: center;
+}
+.article small {
+    display: block;
+    text-align: right;
+    margin-bottom: 10px;
+    color: rgba(255,255,255, 0.8) !important;
 }
 @media only screen and (max-width: 700px){
     .secondary.pointing.menu .item {

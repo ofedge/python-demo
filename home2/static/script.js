@@ -14,6 +14,14 @@ $(function(){
         window.history.pushState(PageSwitch.pages[1], '', '/game');
         PageSwitch.game();
     });
+    $('a[name=wellread]').on('click', function(){
+        window.history.pushState(PageSwitch.pages[2], '', 'wellread');
+        PageSwitch.wellread();
+    });
+    $('a[name=artifact]').on('click', function(){
+        window.history.pushState(PageSwitch.pages[3], '', 'artifact');
+        PageSwitch.artifact();
+    });
     // window history function
     window.onpopstate = function(event){
         if(event.state){
@@ -21,10 +29,73 @@ $(function(){
                 PageSwitch.home();
             } else if (event.state == PageSwitch.pages[1]) {
                 PageSwitch.game();
+            } else if (event.state == PageSwitch.pages[2]) {
+                PageSwitch.wellread();
+            } else if (event.state == PageSwitch.pages[3]) {
+                PageSwitch.artifact();
             }
         }
     }
 });
+// page switch function
+var PageSwitch = {
+    // all the pages
+    pages: {
+        0: 'Home',
+        1: 'Game',
+        2: 'Well Read',
+        3: 'Artifact Knowledge'
+    },
+    pageDisappear: function(func){
+        $('#wrap_content').transition({
+            onHide: func
+        }).transition('hide');
+    },
+    pageAppear: function(){
+        $('#wrap_content').transition('show');
+    },
+    loadPage: function(pageIndex, url){
+        PageSwitch.pageDisappear(
+            function(){
+                $.get(url, function(data){
+                    for(var i = 0; i < $(data).length; i++){
+                        if($(data)[i].tagName && $(data)[i].tagName.toLowerCase() == 'title'){
+                            $('title').html($(data).eq(i).html());
+                        }
+                        if($(data).eq(i).find('#wrap_content').length > 0){
+                            var $wrap_content = $(data).eq(i).find('#wrap_content');
+                            $wrap_content.addClass('transition hidden');
+                            $('#wrap_content').html($wrap_content.html());
+                            break;
+                        }
+                    }
+                    PageSwitch.pageAppear();
+                    $('.ui.sidebar.mainmenu').sidebar('hide');
+                }, 'html');
+            }
+        );
+    },
+    home: function(){
+        $('a.item').removeClass('active');
+        $('a[name=home]').addClass('active');
+        PageSwitch.loadPage(0, '/');
+    },
+    game: function(){
+        $('a.item').removeClass('active');
+        $('a[name=game]').addClass('active');
+        PageSwitch.loadPage(1, '/game');
+    },
+    wellread: function(){
+        $('a.item').removeClass('active');
+        $('a[name=wellread]').addClass('active');
+        PageSwitch.loadPage(2, '/wellread');
+    },
+    artifact: function(){
+        $('a.item').removeClass('active');
+        $('a[name=artifact]').addClass('active');
+        PageSwitch.loadPage(3, '/artifact');
+    }
+}
 // sign in
 var SignIn = {
     regExp: /^[0-9a-zA-z_]{4,18}$/,
@@ -83,7 +154,8 @@ var SignIn = {
                     $('.basic.modal.sysinfo .content').html('<h3>' + data.msg + '</h3>');
                     $('.basic.modal.sysinfo').modal('show');
                     if(data.rtcode == 1){
-                        var btnHtml = '<a class="item" name="user">' + data.data.username + '</a><a class="item" name="signout">Sign out</a>';
+                        var btnHtml = '<a class="item" name="user"><i class="user icon"></i>' + data.data.username +
+                            '</a><a class="item" name="signout">Sign out</a>';
                         $('.ui.secondary.pointing.menu .right.menu').html(btnHtml);
                     }
                 }
@@ -103,54 +175,31 @@ var SignIn = {
         });
     }
 }
-// page switch function
-var PageSwitch = {
-    // all the pages
-    pages: {
-        0: 'Home',
-        1: 'Game',
-        2: 'Well Read',
-        3: 'Artifact Knowledge'
-    },
-    pageDisappear: function(func){
-        $('#content_body').animate({'height': '0'}, 'fast', function(){
-            $('#content_body').remove();
-            if(func)
-                func();
-        });
-    },
-    pageAppear: function(){
-        $('#content_body').animate({'height': '719px'}, 'fast');
-    },
-    loadPage: function(pageIndex, url){
-        PageSwitch.pageDisappear(
-            function(){
-                $.get(url, function(data){
-                    for(var i = 0; i < $(data).length; i++){
-                        if($(data)[i].tagName && $(data)[i].tagName.toLowerCase() == 'title'){
-                            $('title').html($(data).eq(i).html());
-                        }
-                        if($(data).eq(i).find('#wrap_content').length > 0){
-                            var $wrap_content = $(data).eq(i).find('#wrap_content');
-                            $wrap_content.find('#content_body').css('height','0');
-                            $('#wrap_content').html($wrap_content.html());
-                            break;
-                        }
-                    }
-                    PageSwitch.pageAppear();
-                    $('.ui.sidebar.mainmenu').sidebar('hide');
-                }, 'html');
+// articles loading
+var Articles = {
+    loadArticle: function(url, id){
+        $.ajax({
+            url: url,
+            type: 'get',
+            beforeSend: function(){
+                $('.ui.segment.article').addClass('loading');
+            },
+            data: {aid: id},
+            success: function(data){
+                var articleHtml = '<small>' + data.data.summary + '</small>';
+                var content = data.data.content;
+                for(var i = 0; i < content.length; i++){
+                    articleHtml += '<p>' + content[i] + '</p>';
+                }
+                $('.ui.segment.article').html(articleHtml);
+            },
+            complete: function(){
+                $('.ui.segment.article').removeClass('loading');
+            },
+            error: function(){
+                $('.ui.segment.article').html('<p>SERVER ERROR!</p>');
+                $('.ui.segment.article').removeClass('loading');
             }
-        );
-    },
-    home: function(){
-        $('a.item').removeClass('active');
-        $('a[name=home]').addClass('active');
-        PageSwitch.loadPage(0, '/');
-    },
-    game: function(){
-        $('a.item').removeClass('active');
-        $('a[name=game]').addClass('active');
-        PageSwitch.loadPage(1, '/game');
+        });
     }
 }

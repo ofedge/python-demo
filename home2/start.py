@@ -2,7 +2,8 @@
 #-*- coding:utf-8 -*-
 from flask import Flask, render_template, request, session, jsonify
 from flask_pymongo import PyMongo
-import logging, time, hashlib, re
+from bson.objectid import ObjectId
+import logging, time, hashlib, re, random
 
 
 MONGO_HOST = 'localhost'
@@ -39,20 +40,20 @@ def check_string(val):
     return re.match('^[0-9a-zA-Z]{4,18}$', val)
 
 
-@app.route('/')
+@app.route('/', methods = ['GET'])
 def index():
     logging.info('--> Visitor Real IP: ' + str(get_ip()))
-    return render_template('index.html')
+    count = mongo.db.excerpt.count()
+    skip = random.randint(0, count-1)
+    cursor = mongo.db.excerpt.find({},{'_id':0}).skip(skip).limit(1)
+    experts = [c for c in cursor]
+    expert = experts[0] if experts else None
+    return render_template('index.html', expert=expert, url='')
 
 
-@app.route('/game')
+@app.route('/game', methods = ['GET'])
 def game():
-    return render_template('game.html')
-
-
-@app.route('/tmp')
-def tmp():
-    return render_template('template.html')
+    return render_template('game.html', url='game')
 
 
 @app.route('/signin', methods=['POST'])
@@ -85,6 +86,34 @@ def login():
                 'login_ip': get_ip()
             }})
             return jsonify({'rtcode': 1, 'msg': 'succeed!', 'data': session.get('user')})
+
+
+@app.route('/wellread', methods = ['GET'])
+def wellread():
+    aid = request.args.get('aid')
+    if not aid:
+        articles = mongo.db.wellread.find({},{'title': 1}).sort([('sort', 1)])
+        entities = []
+        for article in articles:
+            entities.append({'id':str(article['_id']), 'title': article['title']})
+        return render_template('article.html', entities = entities, url = 'wellread')
+    else:
+        article = mongo.db.wellread.find_one({'_id': ObjectId(aid)}, {'title': 1, 'summary': 1, 'content': 1, '_id': 0})
+        return jsonify({'rtcode': 1, 'msg': 'succeed!', 'data': article})
+
+
+@app.route('/artifact', methods = ['GET'])
+def artifact():
+    aid = request.args.get('aid')
+    if not aid:
+        articles = mongo.db.artifact.find({},{'title': 1}).sort([('sort', 1)])
+        entities = []
+        for article in articles:
+            entities.append({'id':str(article['_id']), 'title': article['title']})
+        return render_template('article.html', entities = entities, url = 'artifact')
+    else:
+        article = mongo.db.artifact.find_one({'_id': ObjectId(aid)}, {'title': 1, 'summary': 1, 'content': 1, '_id': 0})
+        return jsonify({'rtcode': 1, 'msg': 'succeed!', 'data': article})
 
 
 @app.route('/signout', methods=['GET'])
